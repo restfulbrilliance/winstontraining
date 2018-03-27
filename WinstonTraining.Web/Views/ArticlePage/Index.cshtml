@@ -1,0 +1,9 @@
+﻿@using EPiServer.Core
+@using EPiServer.Web.Mvc.Html
+
+@model WinstonTraining.Core.Models.ArticlePage
+
+<h1>@Html.PropertyFor(m => m.Title)</h1>
+<div>
+    @Html.PropertyFor(m => m.MainBody)
+</div>
