@@ -1,0 +1,9 @@
+﻿@using EPiServer.Core
+@using EPiServer.Web.Mvc.Html
+
+@model WinstonTraining.Core.Models.ArticlePage
+
+<div>
+  <h3><a href="@Url.ContentUrl(Model.ContentLink)">@Html.PropertyFor(m => m.Title)</a></h3>
+  @Model.MainBodyThumbnailNoHtml
+</div>

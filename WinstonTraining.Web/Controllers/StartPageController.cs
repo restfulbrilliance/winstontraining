@@ -4,9 +4,9 @@ using WinstonTraining.Core.Models;
 
 namespace WinstonTraining.Web.Controllers
 {
-    public class ArticlePageController : PageController<ArticlePage>
+    public class StartPageController : PageController<StartPage>
     {
-        public ActionResult Index(ArticlePage currentPage)
+        public ActionResult Index(StartPage currentPage)
         {
             return View(currentPage);
         }

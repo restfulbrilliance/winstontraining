@@ -1,0 +1,15 @@
+﻿@using EPiServer.Core
+@using EPiServer.Web.Mvc.Html
+@model WinstonTraining.Core.Models.StartPage
+
+<h1>@Html.PropertyFor(m => m.Title)</h1>
+<div>
+    @Html.PropertyFor(m => m.MainBody)
+</div>
+
+<h2>Articles</h2>
+
+@foreach (var childArticle in Model.ChildArticles)
+{
+    @Html.Partial("_ArticlePage", childArticle)
+}
