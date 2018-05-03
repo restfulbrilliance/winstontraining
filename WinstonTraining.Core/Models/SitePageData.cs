@@ -1,5 +1,4 @@
 ﻿using EPiServer.Core;
-using EPiServer.DataAnnotations;
 using System.ComponentModel.DataAnnotations;
 using WinstonTraining.Core.Tabs;
 

@@ -214,6 +214,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\ArticlePage.cs" />
+    <Compile Include="Models\Commerce\Product.cs" />
+    <Compile Include="Models\Commerce\SiteNodeContent.cs" />
+    <Compile Include="Models\Commerce\SiteVariationContent.cs" />
+    <Compile Include="Models\Commerce\SiteProductContent.cs" />
+    <Compile Include="Models\Commerce\Sku.cs" />
+    <Compile Include="Models\Commerce\Subcategory.cs" />
+    <Compile Include="Models\Commerce\TopLevelCategory.cs" />
     <Compile Include="Models\SitePageData.cs" />
     <Compile Include="Models\StartPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
