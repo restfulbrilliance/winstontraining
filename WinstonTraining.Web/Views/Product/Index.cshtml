@@ -1,0 +1,19 @@
+﻿@using EPiServer.Core
+@using EPiServer.Web.Mvc.Html
+@model WinstonTraining.Core.Models.Commerce.Product
+<h1>@Html.PropertyFor(m => m.Name)</h1>
+<h2>@Model.Code</h2>
+<div>
+    @Html.PropertyFor(m => m.ProductDescription)
+</div>
+<h2>Category: @Model.TopLevelCategory.Name</h2>
+<h2>Subcategory: @Model.Subcategory.Name</h2>
+<h2>Skus:</h2>
+<ol>
+    @foreach (var sku in Model.Skus)
+    {
+        <li>@sku.Name - @sku.Code</li>
+    }
+</ol>
+<h2>Category: @Model.TopLevelCategory.Name</h2>
+<h2>Subcategory: @Model.Subcategory.Name</h2>
