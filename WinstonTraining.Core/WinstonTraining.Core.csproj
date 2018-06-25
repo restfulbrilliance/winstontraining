@@ -214,6 +214,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\ArticlePage.cs" />
+    <Compile Include="Models\Commerce\Extensions\IHaveTopLevelCategoryExtensions.cs" />
+    <Compile Include="Models\Commerce\Extensions\IHaveSubcategoryExtensions.cs" />
+    <Compile Include="Models\Commerce\Interfaces\IHaveSubcategory.cs" />
+    <Compile Include="Models\Commerce\Interfaces\IHaveTopLevelCategory.cs" />
     <Compile Include="Models\Commerce\Product.cs" />
     <Compile Include="Models\Commerce\SiteNodeContent.cs" />
     <Compile Include="Models\Commerce\SiteVariationContent.cs" />
@@ -231,5 +235,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

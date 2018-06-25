@@ -8,11 +8,13 @@ using EPiServer.ServiceLocation;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using WinstonTraining.Core.Models.Commerce.Interfaces;
+using WinstonTraining.Core.Models.Commerce.Extensions;
 
 namespace WinstonTraining.Core.Models.Commerce
 {
     [CatalogContentType(DisplayName = "Product", GUID = "9cefe4e8-5801-4867-96d2-e88e52c638a0", Description = "")]
-    public class Product : SiteProductContent
+    public class Product : SiteProductContent, IHaveTopLevelCategory, IHaveSubcategory
     {
         private static Injected<IContentLoader> _contentLoader { get; set; }
         private static Injected<IRelationRepository> _relationRepository { get; set; }
@@ -34,21 +36,9 @@ namespace WinstonTraining.Core.Models.Commerce
                 if (_topLevelCategory != null)
                     return _topLevelCategory;
 
-                var topLevelCategoryContentRef = this.Subcategory.ParentLink;
+                _topLevelCategory = this.TopLevelCategoryEx();
 
-                if (ContentReference.IsNullOrEmpty(topLevelCategoryContentRef))
-                    return null;
-
-                TopLevelCategory topLevelCategory = null;
-
-                if (_contentLoader.Service
-                    .TryGet<TopLevelCategory>(topLevelCategoryContentRef, out topLevelCategory))
-                {
-                    _topLevelCategory = topLevelCategory;
-                    return _topLevelCategory;
-                }
-
-                return null;
+                return _topLevelCategory;
             }
         }
 
@@ -62,21 +52,9 @@ namespace WinstonTraining.Core.Models.Commerce
                 if (_subcategory != null)
                     return _subcategory;
 
-                var subcategoryContetRef = this.ParentLink;
+                _subcategory = this.SubcategoryEx();
 
-                if (ContentReference.IsNullOrEmpty(subcategoryContetRef))
-                    return null;
-
-                Subcategory subcategory = null;
-
-                if(_contentLoader.Service
-                    .TryGet<Subcategory>(subcategoryContetRef, out subcategory))
-                {
-                    _subcategory = subcategory;
-                    return _subcategory;
-                }
-
-                return null;
+                return _subcategory;
             }
         }
 
