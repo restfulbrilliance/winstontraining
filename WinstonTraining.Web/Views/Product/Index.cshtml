@@ -13,7 +13,7 @@
 <ol>
     @foreach (var sku in Model.Skus)
     {
-        <li>@sku.Name - @sku.Code</li>
+        <li>@sku.Name - @sku.Code - @sku.GetDisplayPrice()</li>
     }
 </ol>
 <h2>Category: @Model.TopLevelCategory.Name</h2>
