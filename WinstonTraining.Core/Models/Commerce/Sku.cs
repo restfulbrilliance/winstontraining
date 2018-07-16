@@ -13,6 +13,7 @@ namespace WinstonTraining.Core.Models.Commerce
     public class Sku : SiteVariationContent, IHaveTopLevelCategory, IHaveSubcategory
     {
         private static Injected<IPriceDetailService> _priceDetailService { get; set; }
+        //private static Injected<IPriceService> _priceService { get; set; }
 
         private TopLevelCategory _topLevelCategory;
         private const string DISPLAY_NO_PRICE = "Not purchasable";
@@ -61,7 +62,7 @@ namespace WinstonTraining.Core.Models.Commerce
             if (defaultPrice == null)
                 return DISPLAY_NO_PRICE;
 
-            return $"{defaultPrice.UnitPrice.Currency.CurrencyCode}{defaultPrice.UnitPrice.Amount}";
+            return $"{defaultPrice.UnitPrice.Currency.CurrencyCode} {defaultPrice.UnitPrice.Amount}";
         }
     }
 }

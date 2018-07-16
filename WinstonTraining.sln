@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinstonTraining.Web", "Wins
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinstonTraining.Core", "WinstonTraining.Core\WinstonTraining.Core.csproj", "{AD2D4D82-4A60-4948-BC24-9E1B62204480}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinstonTraining.CommerceManager", "WinstonTraining.CommerceManager\WinstonTraining.CommerceManager.csproj", "{84AA0AB4-D455-489E-9157-4DBA16F3E79E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{AD2D4D82-4A60-4948-BC24-9E1B62204480}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD2D4D82-4A60-4948-BC24-9E1B62204480}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD2D4D82-4A60-4948-BC24-9E1B62204480}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84AA0AB4-D455-489E-9157-4DBA16F3E79E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84AA0AB4-D455-489E-9157-4DBA16F3E79E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84AA0AB4-D455-489E-9157-4DBA16F3E79E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84AA0AB4-D455-489E-9157-4DBA16F3E79E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
