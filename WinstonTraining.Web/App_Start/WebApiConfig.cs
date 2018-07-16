@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -9,6 +10,10 @@ namespace WinstonTraining.Web
     {
         public static void Register(HttpConfiguration config)
         {
+            config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.LocalOnly;
+            config.Formatters.JsonFormatter.SerializerSettings = new JsonSerializerSettings();
+            config.Formatters.XmlFormatter.UseXmlSerializer = true;
+
             // Web API 2 attribute routing
             config.MapHttpAttributeRoutes();
 
