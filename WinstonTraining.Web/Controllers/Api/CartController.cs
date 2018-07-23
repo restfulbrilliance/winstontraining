@@ -11,6 +11,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using WinstonTraining.Core.Models.Commerce;
+using WinstonTraining.Core.Utilities.CartExtensions;
 
 namespace WinstonTraining.Web.Controllers.Api
 {
@@ -23,6 +24,8 @@ namespace WinstonTraining.Web.Controllers.Api
         private static Injected<IOrderRepository> _orderRepository { get; set; }
         private static Injected<IContentLoader> _contentLoader { get; set; }
         private static Injected<ReferenceConverter> _referenceConverter { get; set; }
+        private static Injected<ILineItemValidator> _lineItemValidator { get; set; }
+        private static Injected<IPlacedPriceProcessor> _placedPriceProcessor { get; set; }
 
         [HttpGet]
         [Route("")]
@@ -73,8 +76,38 @@ namespace WinstonTraining.Web.Controllers.Api
                 cart.UpdateLineItemQuantity(shipment, existingLineItem, existingLineItem.Quantity + quantityToAdd);
             }
 
+            var validationIssues = new Dictionary<ILineItem, List<ValidationIssue>>();
+
+            cart.ValidateOrRemoveLineItems((item, issue) =>
+                validationIssues.AddValidationIssues(item, issue), _lineItemValidator.Service);
+        
+            cart.UpdatePlacedPriceOrRemoveLineItems(CustomerContext.Current.GetContactById(cart.CustomerId), (item, issue) => validationIssues.AddValidationIssues(item, issue),
+                _placedPriceProcessor.Service);
+
             _orderRepository.Service.Save(cart);
             return Ok(cart);
+        }
+
+        [HttpDelete]
+        [Route("clear")]
+        public IHttpActionResult ClearCart()
+        {
+            var customerId = CustomerContext.Current.CurrentContactId;
+
+            if (customerId == null)
+                return NotFound();
+
+            var cart = _orderRepository.Service.LoadOrCreateCart<ICart>(customerId, DEFAULT_CART_NAME);
+
+            var lineItemsInFirstShipment = cart.GetFirstShipment().LineItems;
+
+            if(lineItemsInFirstShipment != null && lineItemsInFirstShipment.Count > 0)
+            {
+                cart.GetFirstShipment().LineItems.Clear();
+                _orderRepository.Service.Save(cart);
+            }
+
+            return Ok();
         }
     }
 }
