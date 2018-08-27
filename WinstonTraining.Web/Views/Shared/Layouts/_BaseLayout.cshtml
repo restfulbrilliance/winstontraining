@@ -5,12 +5,15 @@
 <html class="no-js en-us" lang="en-us">
 <!--<![endif]-->
 
-    <head></head>
+    <head>
+        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    </head>
 
     <body>
         <div>
             @RenderBody()
         </div>
+        @RenderSection("scripts", false)
     </body>
 </html>
 

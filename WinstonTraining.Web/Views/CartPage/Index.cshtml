@@ -1,0 +1,44 @@
+﻿@using EPiServer.Core
+@using EPiServer.Web.Mvc.Html
+
+@model WinstonTraining.Core.Models.CartPage
+
+<h1>
+  @Html.PropertyFor(m => m.Title)
+</h1>
+
+<p>
+  @Html.PropertyFor(m => m.MainBody)
+</p>
+
+<div id="cart">
+    <!-- insert the loaded cart -->
+</div>
+
+@section scripts{
+
+    <script>
+
+        //the long-hand way to wait for DOM ready
+        /*
+        jQuery(document).ready(function () {
+            //write code here
+        });
+        */
+
+        //the short-hard way to wait for DOM ready
+        $(function () {
+
+            $.ajax(
+            {
+                method: "GET",
+                url: "/api/cart"
+
+            }).done(function (response) {
+                console.log(response);
+            });
+
+        });
+
+    </script>
+}
