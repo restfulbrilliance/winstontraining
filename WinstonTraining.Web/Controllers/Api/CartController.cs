@@ -21,11 +21,11 @@ namespace WinstonTraining.Web.Controllers.Api
         private const string DEFAULT_CART_NAME = "Default";
         private const string WISHLIST_NAME = "Wishlist";
 
-        private static Injected<IOrderRepository> _orderRepository { get; set; }
-        private static Injected<IContentLoader> _contentLoader { get; set; }
-        private static Injected<ReferenceConverter> _referenceConverter { get; set; }
-        private static Injected<ILineItemValidator> _lineItemValidator { get; set; }
-        private static Injected<IPlacedPriceProcessor> _placedPriceProcessor { get; set; }
+        private static Injected<IOrderRepository> _orderRepository;
+        private static Injected<IContentLoader> _contentLoader;
+        private static Injected<ReferenceConverter> _referenceConverter;
+        private static Injected<ILineItemValidator> _lineItemValidator;
+        private static Injected<IPlacedPriceProcessor> _placedPriceProcessor;
 
         [HttpGet]
         [Route("")]
@@ -40,9 +40,31 @@ namespace WinstonTraining.Web.Controllers.Api
             return Ok(cart);
         }
 
+        [HttpDelete]
+        [Route("")]
+        public IHttpActionResult ClearCart()
+        {
+            var customerId = CustomerContext.Current.CurrentContactId;
+
+            if (customerId == null)
+                return NotFound();
+
+            var cart = _orderRepository.Service.LoadOrCreateCart<ICart>(customerId, DEFAULT_CART_NAME);
+
+            var lineItemsInFirstShipment = cart.GetFirstShipment().LineItems;
+
+            if(lineItemsInFirstShipment != null && lineItemsInFirstShipment.Count > 0)
+            {
+                cart.GetFirstShipment().LineItems.Clear();
+                _orderRepository.Service.Save(cart);
+            }
+
+            return Ok();
+        }
+
         [HttpGet]
-        [Route("add/{skuCode}/{quantityToAdd}")]
-        public IHttpActionResult AddToCart(string skuCode, int quantityToAdd = 1)
+        [Route("update/{skuCode}/{quantityToUpdate}")]
+        public IHttpActionResult AddOrUpdateToCart(string skuCode, int quantityToUpdate = 1)
         {
             var customerId = CustomerContext.Current.CurrentContactId;
 
@@ -66,14 +88,14 @@ namespace WinstonTraining.Web.Controllers.Api
             {
                 var newLineItem = cart.CreateLineItem(skuCode);
                 newLineItem.DisplayName = skuToAdd.DisplayName;
-                newLineItem.Quantity = quantityToAdd;
+                newLineItem.Quantity = quantityToUpdate;
                 cart.AddLineItem(newLineItem);
             }
 
             else
             {
                 var shipment = cart.GetFirstShipment();
-                cart.UpdateLineItemQuantity(shipment, existingLineItem, existingLineItem.Quantity + quantityToAdd);
+                cart.UpdateLineItemQuantity(shipment, existingLineItem, quantityToUpdate);
             }
 
             var validationIssues = new Dictionary<ILineItem, List<ValidationIssue>>();
@@ -86,28 +108,6 @@ namespace WinstonTraining.Web.Controllers.Api
 
             _orderRepository.Service.Save(cart);
             return Ok(cart);
-        }
-
-        [HttpDelete]
-        [Route("clear")]
-        public IHttpActionResult ClearCart()
-        {
-            var customerId = CustomerContext.Current.CurrentContactId;
-
-            if (customerId == null)
-                return NotFound();
-
-            var cart = _orderRepository.Service.LoadOrCreateCart<ICart>(customerId, DEFAULT_CART_NAME);
-
-            var lineItemsInFirstShipment = cart.GetFirstShipment().LineItems;
-
-            if(lineItemsInFirstShipment != null && lineItemsInFirstShipment.Count > 0)
-            {
-                cart.GetFirstShipment().LineItems.Clear();
-                _orderRepository.Service.Save(cart);
-            }
-
-            return Ok();
         }
     }
 }
