@@ -4,12 +4,17 @@ using EPiServer.DataAnnotations;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
+using WinstonTraining.Core.Groups;
 using WinstonTraining.Core.Utilities.Html;
 
 namespace WinstonTraining.Core.Models
 {
-    [ContentType(DisplayName = "Article Page", GUID = "5b1030e9-1072-4554-976b-3200f7dab43e", Description = "Basic Article Page")]
-    [AvailableContentTypes(Exclude = new Type[] { typeof(PageData) })]
+    [ContentType(DisplayName = "Article Page", 
+        GUID = "5b1030e9-1072-4554-976b-3200f7dab43e", 
+        Description = "Basic Article Page",
+        GroupName = CustomGroups.MAIN_CONTENT_TYPE_GROUP,
+        Order = 100)]
+    [AvailableContentTypes(Availability = Availability.None)]
     public class ArticlePage : SitePageData
     {
         private const int MAIN_BODY_THUMBNAIL_LENGTH = 500;
@@ -18,7 +23,7 @@ namespace WinstonTraining.Core.Models
             Name = "Title",
             Description = "Article title, falls back to Name if not defined.",
             GroupName = SystemTabNames.Content,
-            Order = 2000)]
+            Order = 2000 )]
         public virtual string Title
         {
             get
@@ -35,7 +40,7 @@ namespace WinstonTraining.Core.Models
 
         [Display(
             Name = "Main body",
-            Description = "The main body will be shown in the main content area of the page, using the XHTML-editor you can insert for example text, images and tables.",
+            Description = "The main body will be shown in the main area of the page, using the XHTML-editor you can insert for example text, images and tables.",
             GroupName = SystemTabNames.Content,
             Order = 2100)]
         public virtual XhtmlString MainBody { get; set; }
@@ -65,5 +70,12 @@ namespace WinstonTraining.Core.Models
                 return _mainBodyThumbnalNoHtml;
             }
         }
+
+        [Display(
+            Name = "Main content area",
+            Description = "The main content area. Can contain blocks, pages, products, etc.",
+            GroupName = SystemTabNames.Content,
+            Order = 2200)]
+        public virtual ContentArea MainContentArea { get; set; }
     }
 }

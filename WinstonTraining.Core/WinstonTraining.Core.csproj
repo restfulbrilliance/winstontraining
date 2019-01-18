@@ -229,7 +229,7 @@
     <Compile Include="Models\SitePageData.cs" />
     <Compile Include="Models\StartPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tabs\CustomTabs.cs" />
+    <Compile Include="Groups\CustomGroups.cs" />
     <Compile Include="Utilities\CartExtensions\CartExtensions.cs" />
     <Compile Include="Utilities\Html\HtmlUtility.cs" />
   </ItemGroup>
