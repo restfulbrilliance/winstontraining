@@ -1,9 +1,21 @@
 ﻿@using EPiServer.Core
 @using EPiServer.Web.Mvc.Html
+@using EPiServer.Framework.Web
 
 @model WinstonTraining.Core.Models.ArticlePage
 
 <h1>@Html.PropertyFor(m => m.Title)</h1>
-<div>
+
+<div class="mainBody">
     @Html.PropertyFor(m => m.MainBody)
 </div>
+
+@Html.PropertyFor(m => m.MainContentArea, 
+    new
+    {
+        CssClass = "row",
+        //ChildrenCustomTagName = "",
+        //ChildrenCssClass = ""
+        //Tag = RenderingTags.Sidebar
+    }
+)

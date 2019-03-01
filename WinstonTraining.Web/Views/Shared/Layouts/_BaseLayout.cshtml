@@ -6,14 +6,16 @@
 <!--<![endif]-->
 
     <head>
-        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+        <link href="~/Content/bootstrap.min.css" rel='stylesheet' />
+        @RenderSection("customCssHead", false)
+        @RenderSection("customScriptsHead", false)
     </head>
 
     <body>
-        <div>
-            @RenderBody()
-        </div>
-        @RenderSection("scripts", false)
+        @RenderBody()
+        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        @RenderSection("customScriptsBodyClose", false)
     </body>
 </html>
 

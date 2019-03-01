@@ -214,6 +214,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\ArticlePage.cs" />
+    <Compile Include="Models\Blocks\Interfaces\INoWrapper.cs" />
+    <Compile Include="Models\Blocks\SiteBlockData.cs" />
+    <Compile Include="Models\Blocks\TeaserBlock.cs" />
     <Compile Include="Models\CartPage.cs" />
     <Compile Include="Models\Commerce\Extensions\IHaveTopLevelCategoryExtensions.cs" />
     <Compile Include="Models\Commerce\Extensions\IHaveSubcategoryExtensions.cs" />

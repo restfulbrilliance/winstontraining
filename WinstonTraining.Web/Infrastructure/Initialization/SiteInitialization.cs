@@ -1,14 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Web.Http;
-using EPiServer.Framework;
+﻿using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
+using EPiServer.ServiceLocation;
+using System.Web.Http;
 
-namespace WinstonTraining.Web.Infrastructure
+namespace WinstonTraining.Web.Infrastructure.Initialization
 {
     [InitializableModule]
     [ModuleDependency(typeof(EPiServer.Web.InitializationModule))]
-    public class SiteInitialization : IInitializableModule
+    public class SiteInitialization : IConfigurableModule
     {
         public void Initialize(InitializationEngine context)
         {
@@ -22,6 +21,11 @@ namespace WinstonTraining.Web.Infrastructure
         public void Uninitialize(InitializationEngine context)
         {
             //Add uninitialization logic
+        }
+
+        public void ConfigureContainer(ServiceConfigurationContext context)
+        {
+            context.StructureMap().Configure(cfg => cfg.AddRegistry<SiteRegistry>());
         }
     }
 }

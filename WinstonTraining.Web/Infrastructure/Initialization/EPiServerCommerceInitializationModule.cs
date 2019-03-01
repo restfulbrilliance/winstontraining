@@ -3,7 +3,7 @@ using EPiServer.Commerce.Routing;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 
-namespace WinstonTraining.Web.Infrastructure
+namespace WinstonTraining.Web.Infrastructure.Initialization
 {
     [InitializableModule]
     [ModuleDependency(typeof(EPiServer.Commerce.Initialization.InitializationModule))]

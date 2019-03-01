@@ -5,6 +5,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
 using WinstonTraining.Core.Groups;
+using WinstonTraining.Core.Models.Blocks;
 using WinstonTraining.Core.Utilities.Html;
 
 namespace WinstonTraining.Core.Models
@@ -76,6 +77,7 @@ namespace WinstonTraining.Core.Models
             Description = "The main content area. Can contain blocks, pages, products, etc.",
             GroupName = SystemTabNames.Content,
             Order = 2200)]
+        [AllowedTypes(AllowedTypes = new Type[] { typeof(TeaserBlock) })]
         public virtual ContentArea MainContentArea { get; set; }
     }
 }
