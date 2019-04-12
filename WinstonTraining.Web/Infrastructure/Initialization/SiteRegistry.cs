@@ -1,5 +1,7 @@
 ﻿using EPiServer.Web.Mvc.Html;
 using StructureMap;
+using WinstonTraining.Core.Services;
+using WinstonTraining.Core.Services.Interfaces;
 using WinstonTraining.Web.CustomCustomArea;
 
 namespace WinstonTraining.Web.Infrastructure.Initialization
@@ -9,7 +11,7 @@ namespace WinstonTraining.Web.Infrastructure.Initialization
         public SiteRegistry()
         {
             //rs: example of defining an IoC rule
-            //For<IMyCustomerService>().Use<MyCustomService>();
+            For<ITestService>().Use<AltTestService>();
 
             //rs: example of defining an IoC rule for a singleton service
             //For<IMyCustomerSingletonService>().Singleton().User<MyCustomSingletonService>();

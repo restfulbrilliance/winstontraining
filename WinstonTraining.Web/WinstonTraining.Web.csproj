@@ -315,6 +315,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Constants\DisplayOptionsTags.cs" />
     <Compile Include="Controllers\Api\CartController.cs" />
+    <Compile Include="Controllers\Api\Models\Developer.cs" />
+    <Compile Include="Controllers\Api\DeveloperController.cs" />
     <Compile Include="Controllers\CartPageController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ArticlePageController.cs" />
@@ -327,6 +329,7 @@
     <Compile Include="Infrastructure\Initialization\EPiServerCommerceInitializationModule.cs" />
     <Compile Include="Infrastructure\Initialization\SiteInitialization.cs" />
     <Compile Include="Infrastructure\Initialization\SiteRegistry.cs" />
+    <Compile Include="Infrastructure\Initialization\StructureMapDependencyResolver.cs" />
     <Compile Include="Infrastructure\Rendering\ViewTemplateModelRegistrator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

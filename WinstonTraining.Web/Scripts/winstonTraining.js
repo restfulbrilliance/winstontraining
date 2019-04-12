@@ -16,7 +16,14 @@ _winstonTraining = (function ($) {
 
     //DOM ready for the JavaScript class
     $(function () {
-        $('.js-TeaserHeader').css({ color: 'red' });
+
+        //var domElement = document.getElementById('homePageMainBody');
+
+        //var $els = $('#testSpan').closest('[data-js-match="testMatch"]');
+
+        //if ($els.length > 0)
+            //$els.remove();
+            //$els.css({ color: 'red' });
     });
 
     return {

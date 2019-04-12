@@ -2,6 +2,7 @@
 using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
 using System.Web.Http;
+using System.Web.Mvc;
 
 namespace WinstonTraining.Web.Infrastructure.Initialization
 {
@@ -25,7 +26,13 @@ namespace WinstonTraining.Web.Infrastructure.Initialization
 
         public void ConfigureContainer(ServiceConfigurationContext context)
         {
-            context.StructureMap().Configure(cfg => cfg.AddRegistry<SiteRegistry>());
+            var container = context.StructureMap();
+
+            //rs: add the structure map registry
+            container.Configure(cfg => cfg.AddRegistry<SiteRegistry>());
+
+            // Wire up MVC dependency resolvers (constructor based injection)
+            DependencyResolver.SetResolver(new StructureMapDependencyResolver(container));
         }
     }
 }
