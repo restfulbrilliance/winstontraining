@@ -316,7 +316,8 @@
     <Compile Include="Constants\DisplayOptionsTags.cs" />
     <Compile Include="Controllers\Api\CartController.cs" />
     <Compile Include="Controllers\Api\Models\Developer.cs" />
-    <Compile Include="Controllers\Api\DeveloperController.cs" />
+    <Compile Include="Controllers\Api\DevelopersController.cs" />
+    <Compile Include="Controllers\DeveloperPageController.cs" />
     <Compile Include="Controllers\CartPageController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ArticlePageController.cs" />
@@ -435,6 +436,7 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Shared\AlternateBlockRenderers\HalfTeaserBlock.cshtml" />
+    <Content Include="Views\DeveloperPage\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

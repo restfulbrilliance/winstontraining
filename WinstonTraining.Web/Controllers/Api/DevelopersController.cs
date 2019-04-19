@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using WinstonTraining.Web.Controllers.Api.Models;
@@ -10,15 +7,16 @@ using WinstonTraining.Web.Controllers.Api.Models;
 namespace WinstonTraining.Web.Controllers.Api
 {
     [RoutePrefix("api/developers")]
-    public class DeveloperController : ApiController
+    public class DevelopersController : ApiController
     {
         private static List<Developer> _developersPuesdoDb = new List<Developer>()
         {
-            new Developer(1, "Rob"),
-            new Developer(2, "Max"),
-            new Developer(3, "Ron"),
-            new Developer(4, "Wes"),
-            new Developer(5, "Victor")
+            new Developer(1, "Rob", "Strube"),
+            new Developer(2, "Max", "Agaronov"),
+            new Developer(3, "Ron", "Phillips"),
+            new Developer(4, "Wes", "Burnett"),
+            new Developer(5, "Victor", "Quispe"),
+            new Developer(6, "Bill", "Kramer")
         };
 
         [HttpGet]
@@ -47,29 +45,15 @@ namespace WinstonTraining.Web.Controllers.Api
 
         [HttpPost]
         [Route("")]
-        public async Task<IHttpActionResult> AddDeveloper(Developer newDeveloper)
+        public async Task<IHttpActionResult> AddDeveloperWithSequentialId(Developer newDevWithoutId)
         {
-            if (newDeveloper == null || newDeveloper.Id <= 0 || string.IsNullOrWhiteSpace(newDeveloper.Name))
-                return BadRequest("The developer object is malformed or missing critical information.");
-
-            if (_developersPuesdoDb.Any(existingDev => existingDev.Id == newDeveloper.Id))
-                return BadRequest("This ID is already in use");
-
-            _developersPuesdoDb.Add(newDeveloper);
-            return Ok(newDeveloper);
-        }
-
-        [HttpPost]
-        [Route("{name}")]
-        public async Task<IHttpActionResult> AddDeveloperWithSequentialId(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(newDevWithoutId.FirstName) || string.IsNullOrWhiteSpace(newDevWithoutId.LastName))
                 return BadRequest("Name is null or empty or whitespace.");
 
             var currentMaxId = _developersPuesdoDb.Max(developer => developer.Id);
             var newId = currentMaxId + 1;
 
-            var newDeveloper = new Developer(newId, name);
+            var newDeveloper = new Developer(newId, newDevWithoutId.FirstName, newDevWithoutId.LastName);
             _developersPuesdoDb.Add(newDeveloper);
             return Ok(newDeveloper);
         }
@@ -95,7 +79,9 @@ namespace WinstonTraining.Web.Controllers.Api
         [Route("")]
         public async Task<IHttpActionResult> UpdateDeveloper(Developer updatedDeveloper)
         {
-            if (updatedDeveloper == null || updatedDeveloper.Id <= 0 || string.IsNullOrWhiteSpace(updatedDeveloper.Name))
+            if (updatedDeveloper == null || updatedDeveloper.Id <= 0 
+                || string.IsNullOrWhiteSpace(updatedDeveloper.FirstName)
+                || string.IsNullOrWhiteSpace(updatedDeveloper.LastName))
                 return BadRequest("The developer object is malformed or missing critical information.");
 
             var developerToUpdate = _developersPuesdoDb.FirstOrDefault(developer => developer.Id == updatedDeveloper.Id);
@@ -103,7 +89,8 @@ namespace WinstonTraining.Web.Controllers.Api
             if (developerToUpdate == null)
                 return NotFound();
 
-            developerToUpdate.Name = updatedDeveloper.Name;
+            developerToUpdate.FirstName = updatedDeveloper.FirstName;
+            developerToUpdate.LastName = updatedDeveloper.LastName;
             return Ok(updatedDeveloper);
         }
     }

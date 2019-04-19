@@ -1,0 +1,16 @@
+﻿@using EPiServer.Core
+@using EPiServer.Web.Mvc.Html
+@using EPiServer.Framework.Web
+
+@model WinstonTraining.Core.Models.DeveloperPage
+
+<h1>@Html.PropertyFor(m => m.Name)</h1>
+
+<div class="mainBody">
+</div>
+
+@section customScriptsBodyClose {
+    <script>
+        _winstonTraining.getAllDevelopers();
+    </script>
+}

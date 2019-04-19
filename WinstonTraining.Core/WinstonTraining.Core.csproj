@@ -229,6 +229,7 @@
     <Compile Include="Models\Commerce\Sku.cs" />
     <Compile Include="Models\Commerce\Subcategory.cs" />
     <Compile Include="Models\Commerce\TopLevelCategory.cs" />
+    <Compile Include="Models\DeveloperPage.cs" />
     <Compile Include="Models\SitePageData.cs" />
     <Compile Include="Models\StartPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

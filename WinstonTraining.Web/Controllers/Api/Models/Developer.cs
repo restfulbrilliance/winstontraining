@@ -2,13 +2,15 @@
 {
     public class Developer
     {
-        public Developer(int id, string name)
+        public Developer(int id, string firstName, string lastName)
         {
             Id = id;
-            Name = name;
+            FirstName = firstName;
+            LastName = lastName;
         }
 
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }

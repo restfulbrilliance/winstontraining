@@ -2,33 +2,35 @@
 
 _winstonTraining = (function ($) {
 
-    function publicMethod1() {
-        alert("public method 1");
-    }
+    function getAllDevelopers() {
 
-    function publicMethod2() {
-        alert("public method 2");
-    }
+        console.log("getAllDevelopers start.");
 
-    function privateMethod() {
-        alert("private method");
+        $.ajax(
+            {
+                url: '/api/developers'
+            }
+        ).then(
+            function (response, status, jxhr) {
+                console.log("getAllDevelopers received response.");
+                console.log(response);
+                console.log("status = " + status);
+                console.log(jxhr);
+            },
+            function () {
+                console.log("error response code received");
+            }
+        );
+
+        console.log("getAllDevelopers method complete.");
     }
 
     //DOM ready for the JavaScript class
     $(function () {
-
-        //var domElement = document.getElementById('homePageMainBody');
-
-        //var $els = $('#testSpan').closest('[data-js-match="testMatch"]');
-
-        //if ($els.length > 0)
-            //$els.remove();
-            //$els.css({ color: 'red' });
     });
 
     return {
-        method1: publicMethod1,
-        method2: publicMethod2
+        getAllDevelopers: getAllDevelopers
     };
 
 })(jQuery);

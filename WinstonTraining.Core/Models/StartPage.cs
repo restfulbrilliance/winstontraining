@@ -9,7 +9,6 @@ namespace WinstonTraining.Core.Models
 {
     [ContentType(DisplayName = "Start Page", GUID = "7e644167-4b7b-419d-bc6f-db432430ccc8", Description = "")]
     [AvailableContentTypes(
-        Include = new Type[] { typeof(ArticlePage), typeof(CartPage) }, 
         Exclude = new Type[] { typeof(StartPage) } 
     )]
     public class StartPage : ArticlePage
