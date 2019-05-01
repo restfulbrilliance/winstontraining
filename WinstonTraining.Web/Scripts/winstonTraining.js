@@ -11,12 +11,18 @@ _winstonTraining = (function ($) {
                 url: '/api/developers'
             }
         ).then(
+            //SUCCESS
             function (response, status, jxhr) {
                 console.log("getAllDevelopers received response.");
-                console.log(response);
+                console.log("response = %o", response);
                 console.log("status = " + status);
-                console.log(jxhr);
+                console.log("jxhr = %o", jxhr);
+
+                //select the element with id=responseData using jQuery
+                var $textArea = $('#responseData');
+                $textArea.text(JSON.stringify(response));
             },
+            //FAILURE
             function () {
                 console.log("error response code received");
             }
