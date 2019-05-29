@@ -37,7 +37,20 @@ namespace WinstonTraining.Web.Controllers.Api
                 return NotFound();
 
             var cart = _orderRepository.Service.LoadOrCreateCart<ICart>(customerId, DEFAULT_CART_NAME);
-            return Ok(cart);
+            var lineItems = cart.GetAllLineItems().ToList();
+
+            var cartResponse = new
+            {
+                CustomerId = cart.CustomerId,
+                Items = lineItems,
+                TotalItems = lineItems.Count,
+                ShippingTotal = cart.GetShippingTotal(),
+                TaxTotal = cart.GetTaxTotal(),
+                SubTotal = cart.GetSubTotal(),
+                Total = cart.GetTotal()
+            };
+
+            return Ok(cartResponse);
         }
 
         [HttpDelete]

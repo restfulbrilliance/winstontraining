@@ -7,57 +7,5 @@
 
 <p>@Html.PropertyFor(m => m.MainBody)</p>
 
-<!-- insert the loaded cart -->
-<div id="cart">
-    @if (HttpContext.Current.User.Identity.IsAuthenticated)
-    {
-        <p>Hello: @(HttpContext.Current.User.Identity.Name)</p>
-    }
-    <p>Total products in cart: <span id="cart-total-items"></span></p>
-</div>
-
 @section customScriptsBodyClose{
-
-    <script>
-
-        var insertCartDataIntoDOM = function insertCartDataIntoDOM(cartResponse) {
-
-            console.log(cartResponse);
-
-            var $cartTotalItemsSpan = $('#cart-total-items');
-
-            if (cartResponse === undefined
-                || cartResponse === null
-                || cartResponse.Forms.length === 0
-                || cartResponse.Forms[0].Shipments.length === 0) {
-
-                $cartTotalItemsSpan.text('0');
-                return;
-            }
-
-            $cartTotalItemsSpan.text(cartResponse.Forms[0].Shipments[0].LineItems.length);
-        };
-
-        //the long-hand way to wait for DOM ready
-        /*
-        jQuery(document).ready(function () {
-            //write code here
-        });
-        */
-
-        //the short-hard way to wait for DOM ready
-        $(function () {
-
-            $.ajax(
-            {
-                method: "GET",
-                url: "/api/cart"
-
-            }).done(function (response) {
-                insertCartDataIntoDOM(response);
-            });
-
-        });
-
-    </script>
 }

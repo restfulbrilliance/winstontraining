@@ -5,17 +5,19 @@
 <html class="no-js en-us" lang="en-us">
 <!--<![endif]-->
 
-    <head>
-        <link href="~/Content/bootstrap.min.css" rel='stylesheet' />
-        @RenderSection("customCssHead", false)
-        @RenderSection("customScriptsHead", false)
-    </head>
+<head>
+    <link href="~/Content/bootstrap.min.css" rel='stylesheet' />
+    @RenderSection("customCssHead", false)
+    @RenderSection("customScriptsHead", false)
+</head>
 
     <body>
         @RenderBody()
         <script src="~/Scripts/jquery-3.3.1.min.js"></script>
         <script src="~/Scripts/bootstrap.min.js"></script>
-        <script src="~/Scripts/winstonTraining.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="~/Scripts/custom/_data.js"></script>
+        <script src="~/Scripts/custom/_store.js"></script>
         @RenderSection("customScriptsBodyClose", false)
     </body>
 </html>
