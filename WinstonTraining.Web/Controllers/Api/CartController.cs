@@ -37,17 +37,34 @@ namespace WinstonTraining.Web.Controllers.Api
                 return NotFound();
 
             var cart = _orderRepository.Service.LoadOrCreateCart<ICart>(customerId, DEFAULT_CART_NAME);
+
             var lineItems = cart.GetAllLineItems().ToList();
+            var total = cart.GetTotal();
+            var currency = total.Currency.CurrencyCode;
 
             var cartResponse = new
             {
                 CustomerId = cart.CustomerId,
-                Items = lineItems,
+
+                //rs: for each line item, create a new anonymous (simplied) object
+                Items = lineItems
+                            .Where(item => item.Quantity > 0)
+                            .Select(item =>
+                                new
+                                {
+                                    Code = item.Code,
+                                    DisplayName = item.DisplayName,
+                                    PlacedPrice = item.PlacedPrice,
+                                    Quantity = item.Quantity
+
+                                }).ToList(),
+
                 TotalItems = lineItems.Count,
-                ShippingTotal = cart.GetShippingTotal(),
-                TaxTotal = cart.GetTaxTotal(),
-                SubTotal = cart.GetSubTotal(),
-                Total = cart.GetTotal()
+                ShippingTotal = cart.GetShippingTotal().Amount,
+                TaxTotal = cart.GetTaxTotal().Amount,
+                SubTotal = cart.GetSubTotal().Amount,
+                Total = total.Amount,
+                Currency = currency
             };
 
             return Ok(cartResponse);
@@ -121,6 +138,11 @@ namespace WinstonTraining.Web.Controllers.Api
 
             _orderRepository.Service.Save(cart);
             return Ok(cart);
+        }
+
+        private void MethodToCallOnLineItem(ILineItem lineItem)
+        {
+            return;
         }
     }
 }

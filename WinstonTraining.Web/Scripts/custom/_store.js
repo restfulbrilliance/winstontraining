@@ -1,61 +1,66 @@
-﻿var _methods = {
+﻿var _data = {
+    cart: {
+        CustomerId: "",
+        Items: {},
+        TotalItems: 0,
+        ShippingTotal: 0,
+        TaxTotal: 0,
+        SubTotal: 0,
+        Total: 0,
+        Currency: ""
+    }
+};
+
+var _methods = {
 
     //service methods
-    validatePromoCodeService: function (promoCode) {
+    getCartService: function () {
 
         var self = this;
         return $.ajax(
             {
                 method: 'GET',
-                url: '/api/promo/validate/' + promoCode,
+                url: '/api/cart',
                 dataType: 'json'
+
             }).then(function (result) {
-                Store.$emit('checkout:validatePromoCodeService:then', result);
+                Store.$emit('cart:getCartService:then', result);
                 return result;
+
             }).fail(function (error) {
-                Store.$emit('checkout:validatePromoCodeService:fail', error);
+                Store.$emit('cart:getCartService:fail', error);
                 return error;
             });
     },
 
-    //data and state methods
-    updatePromoCodeDataAndState: function (promoCode, isPromoCodeValid) {
+    //data methods
+    setCartData: function (cartResult) {
 
         var self = this;
-        self.checkout.state.promoCode = promoCode;
-        self.checkout.state.isPromoCodeApplied = isPromoCodeValid;
-        self.checkout.state.isPromoCodeAppliedFailure = !isPromoCodeValid;
-    },
 
-    //action methods
-    attemptApplyPromoCode: function (promoCode) {
-        var self = this;
-
-        //short circult the validation call if we know the promo code is invalid because it's less that 10 chars
-        if (promoCode.length < 10) {
-            self.updatePromoCodeData(promoCode, false);
-            self.checkout.state.isPromoCodeBeingValidated = false;
-            return;
-        }
-
-        self.checkout.state.isPromoCodeBeingValidated = true;
-
-        self.validatePromoCodeService(promoCode)
-            .then(function (result) {
-                self.updatePromoCodeData(promoCode, true);
-                self.checkout.state.isPromoCodeBeingValidated = false;
-                Store.$emit('checkout:attemptApplyPromoCode:then', result);
-            })
-            .fail(function (error) {
-                self.updatePromoCodeData(promoCode, false);
-                self.checkout.state.isPromoCodeBeingValidated = false;
-                Store.$emit('checkout:attemptApplyPromoCode:fail', error);
-            });
+        //rs: manually mapping each of the fields
+        self.cart.CustomerId = cartResult.CustomerId;
+        self.cart.Items = cartResult.Items;
+        self.cart.TotalItems = cartResult.TotalItems;
+        self.cart.ShippingTotal = cartResult.ShippingTotal;
+        self.cart.TaxTotal = cartResult.TaxTotal;
+        self.cart.SubTotal = cartResult.SubTotal;
+        self.cart.Total = cartResult.Total;
+        self.cart.Currency = cartResult.Currency;
     }
-}
+};
 
 var Store = new Vue({
     data: _data,
     methods: _methods
 });
 window.Store = Store;
+
+//rs: when we hear this event, call the service method
+Store.$on('cart:getCartService', Store.getCartService);
+
+//rs: when we hear this event, call the data method
+Store.$on('cart:getCartService:then', Store.setCartData);
+
+//rs: handle the failure
+//Store.$on('cart:getCartService:fail', xxx);

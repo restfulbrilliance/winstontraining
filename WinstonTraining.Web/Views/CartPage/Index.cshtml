@@ -7,5 +7,12 @@
 
 <p>@Html.PropertyFor(m => m.MainBody)</p>
 
+<div class="vue-Cart">
+    <p>Customer ID: {{CustomerId}}</p>
+    <p>Total Items: {{TotalItems}}</p>
+    <p>Cart Total: {{Total}} {{Currency}}</p>
+</div>
+
 @section customScriptsBodyClose{
+    <script src="~/Scripts/custom/cart.js"></script>
 }
