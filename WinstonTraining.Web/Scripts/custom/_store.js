@@ -1,7 +1,12 @@
 ﻿var _data = {
     cart: {
         CustomerId: "",
-        Items: {},
+        Items: {
+            Code: "",
+            Quantity: 0,
+            DisplayName: "",
+            PlacedPrice: 0.0
+        },
         TotalItems: 0,
         ShippingTotal: 0,
         TaxTotal: 0,

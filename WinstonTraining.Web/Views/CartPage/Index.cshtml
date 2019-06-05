@@ -3,14 +3,39 @@
 
 @model WinstonTraining.Core.Models.CartPage
 
-<h1>@Html.PropertyFor(m => m.Title)</h1>
+<div class="row">
+    <div class="col">
+        <h1>@Html.PropertyFor(m => m.Title)</h1>
+    </div>
+</div>
 
-<p>@Html.PropertyFor(m => m.MainBody)</p>
+<div class="row">
+    <div class="col">
+        <p>@Html.PropertyFor(m => m.MainBody)</p>
+    </div>
+</div>
 
 <div class="vue-Cart">
-    <p>Customer ID: {{CustomerId}}</p>
-    <p>Total Items: {{TotalItems}}</p>
-    <p>Cart Total: {{Total}} {{Currency}}</p>
+
+    <div class="row mb-2">
+        <div class="col">
+            <h2>Total Items: {{TotalItems}}</h2>
+        </div>
+    </div>
+    <div class="row mb-2" v-for="item in Items">
+        <div class="col pt-2">
+            <span v-bind:data-code="item.Code">{{item.DisplayName}}</span>
+        </div>
+        <div class="col-auto">
+            <input type="number" class="p-2" style="width:65px" v-bind:value="item.Quantity" />
+        </div>
+        <div class="col-auto">
+            <button type="button" class="btn btn-primary p-2">Remove</button>
+        </div>
+        <div class="col-auto pt-2">
+            <span>$ {{item.PlacedPrice}} {{Currency}}</span>
+        </div>
+    </div>
 </div>
 
 @section customScriptsBodyClose{

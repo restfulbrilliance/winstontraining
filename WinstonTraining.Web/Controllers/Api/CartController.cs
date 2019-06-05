@@ -27,6 +27,51 @@ namespace WinstonTraining.Web.Controllers.Api
         private static Injected<ILineItemValidator> _lineItemValidator;
         private static Injected<IPlacedPriceProcessor> _placedPriceProcessor;
 
+        class CartApiModel
+        {
+            public string CustomerId { get; set; }
+            public List<LineItemApiModel> Items { get; set; }
+            public int TotalItems { get; set; }
+            public decimal ShippingTotal { get; set; }
+            public decimal ShippingSubTotal { get; set; }
+            public decimal ShippingDiscountTotal{ get; set; }
+            public decimal TaxTotal { get; set; }
+            public decimal SubTotal { get; set; }
+            public decimal Total { get; set; }
+            public string Currency { get; set; }
+
+            public CartApiModel(ICart epiCart)
+            {
+                CustomerId = epiCart.CustomerId.ToString();
+                Items = epiCart.GetAllLineItems().Select(epiLi => new LineItemApiModel(epiLi)).ToList();
+                TotalItems = Items.Count;
+                ShippingTotal = epiCart.GetShippingTotal().Amount;
+                ShippingSubTotal = epiCart.GetShippingSubTotal().Amount;
+                ShippingDiscountTotal = epiCart.GetShippingDiscountTotal().Amount;
+                TaxTotal = epiCart.GetTaxTotal().Amount;
+                SubTotal = epiCart.GetSubTotal().Amount;
+                Total = epiCart.GetTotal().Amount;
+                Currency = epiCart.Currency.CurrencyCode;
+            }
+        }
+
+        class LineItemApiModel
+        {
+            public LineItemApiModel(ILineItem epiLineItem)
+            {
+
+                Code = epiLineItem.Code;
+                DisplayName = epiLineItem.DisplayName;
+                PlacedPrice = epiLineItem.PlacedPrice;
+                Quantity = epiLineItem.Quantity;
+            }
+
+            public string Code { get; set; }
+            public string DisplayName { get; set; }
+            public decimal PlacedPrice { get; set; }
+            public decimal Quantity { get; set; }
+        }
+
         [HttpGet]
         [Route("")]
         public IHttpActionResult GetCart()
@@ -38,36 +83,7 @@ namespace WinstonTraining.Web.Controllers.Api
 
             var cart = _orderRepository.Service.LoadOrCreateCart<ICart>(customerId, DEFAULT_CART_NAME);
 
-            var lineItems = cart.GetAllLineItems().ToList();
-            var total = cart.GetTotal();
-            var currency = total.Currency.CurrencyCode;
-
-            var cartResponse = new
-            {
-                CustomerId = cart.CustomerId,
-
-                //rs: for each line item, create a new anonymous (simplied) object
-                Items = lineItems
-                            .Where(item => item.Quantity > 0)
-                            .Select(item =>
-                                new
-                                {
-                                    Code = item.Code,
-                                    DisplayName = item.DisplayName,
-                                    PlacedPrice = item.PlacedPrice,
-                                    Quantity = item.Quantity
-
-                                }).ToList(),
-
-                TotalItems = lineItems.Count,
-                ShippingTotal = cart.GetShippingTotal().Amount,
-                TaxTotal = cart.GetTaxTotal().Amount,
-                SubTotal = cart.GetSubTotal().Amount,
-                Total = total.Amount,
-                Currency = currency
-            };
-
-            return Ok(cartResponse);
+            return Ok(new CartApiModel(cart));
         }
 
         [HttpDelete]
@@ -137,12 +153,8 @@ namespace WinstonTraining.Web.Controllers.Api
                 _placedPriceProcessor.Service);
 
             _orderRepository.Service.Save(cart);
-            return Ok(cart);
-        }
 
-        private void MethodToCallOnLineItem(ILineItem lineItem)
-        {
-            return;
+            return Ok(new CartApiModel(cart));
         }
     }
 }
