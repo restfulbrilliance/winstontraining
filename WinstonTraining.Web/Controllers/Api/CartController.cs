@@ -26,6 +26,7 @@ namespace WinstonTraining.Web.Controllers.Api
         private static Injected<ReferenceConverter> _referenceConverter;
         private static Injected<ILineItemValidator> _lineItemValidator;
         private static Injected<IPlacedPriceProcessor> _placedPriceProcessor;
+        private static Injected<IInventoryProcessor> _inventoryProcessor;
 
         class CartApiModel
         {
@@ -105,6 +106,7 @@ namespace WinstonTraining.Web.Controllers.Api
                 _orderRepository.Service.Save(cart);
             }
 
+            //return Ok(new { Result = true });
             return Ok();
         }
 
@@ -130,7 +132,7 @@ namespace WinstonTraining.Web.Controllers.Api
             var existingLineItem = cart.GetAllLineItems().FirstOrDefault(li => li.Code.Equals(skuCode, StringComparison.InvariantCultureIgnoreCase));
 
             // We don't already have the SKU in the cart
-            if(existingLineItem == null)
+            if (existingLineItem == null)
             {
                 var newLineItem = cart.CreateLineItem(skuCode);
                 newLineItem.DisplayName = skuToAdd.DisplayName;
@@ -141,7 +143,12 @@ namespace WinstonTraining.Web.Controllers.Api
             else
             {
                 var shipment = cart.GetFirstShipment();
-                cart.UpdateLineItemQuantity(shipment, existingLineItem, quantityToUpdate);
+
+                if (quantityToUpdate <= 0)
+                    shipment.LineItems.Remove(existingLineItem);
+
+                else
+                    cart.UpdateLineItemQuantity(shipment, existingLineItem, quantityToUpdate);
             }
 
             var validationIssues = new Dictionary<ILineItem, List<ValidationIssue>>();

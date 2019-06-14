@@ -62,7 +62,7 @@ namespace WinstonTraining.Core.Models.Commerce
             if (defaultPrice == null)
                 return DISPLAY_NO_PRICE;
 
-            return $"{defaultPrice.UnitPrice.Currency.CurrencyCode} {defaultPrice.UnitPrice.Amount}";
+            return $"{defaultPrice.UnitPrice.Amount.ToString("C2")} {defaultPrice.UnitPrice.Currency.CurrencyCode}";
         }
     }
 }

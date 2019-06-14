@@ -1,14 +1,20 @@
-﻿//rs: Vue.js instance for the cart page partial
+﻿//rs: Vue.js instance for the cart
 var cart = new Vue({
 
-    //rs: not this is tied to a DOM element
+    //rs: note this is scoped to a DOM element
     el: '.vue-Cart',
 
     //rs: scoped data to the 'cart' domain
     data: Store.cart,
+   
+    methods: {
 
-    //rs: when the Vue.js instance is created, simply emit an event
-    created: function () {
-        Store.$emit('cart:getCartService');
+        clickClearAllBtn: function () {
+            Store.$emit('cart:clearCartService');
+        },
+
+        updateLineItemQty: function (skuCode, quantityToUpdate) {
+            Store.$emit('cart:updateCartService', skuCode, quantityToUpdate);
+        }
     }
 });

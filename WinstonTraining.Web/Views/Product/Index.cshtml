@@ -1,6 +1,6 @@
 ﻿@using EPiServer.Core
 @using EPiServer.Web.Mvc.Html
-@using WinstonTraining.Core.Models.Commerce; 
+@using WinstonTraining.Core.Models.Commerce;
 @model WinstonTraining.Core.Models.Commerce.Product
 <h1>@Html.PropertyFor(m => m.Name)</h1>
 <h2>@Model.Code</h2>
@@ -10,11 +10,22 @@
 <h2>Category: @Model.TopLevelCategory.Name</h2>
 <h2>Subcategory: @Model.Subcategory.Name</h2>
 <h2>Skus:</h2>
-<ol>
+
+<!-- rs: vue.js instance for the add to cart functionality -->
+<div class="vue-addToCart">
     @foreach (var sku in Model.Skus)
     {
-        <li>@sku.Name - @sku.Code - @sku.GetDisplayPrice()</li>
+        <div class="row">
+            <div class="col mb-2">@sku.Name</div>
+            <div class="col mb-2">@sku.GetDisplayPrice()</div>
+            <div class="col-auto mb-2"><button type="button" class="btn btn-primary p-2" v-on:click="addToCart('@sku.Code', 1)">Add to Cart</button></div>
+        </div>
     }
-</ol>
+</div>
+
 <h2>Category: @Model.TopLevelCategory.Name</h2>
 <h2>Subcategory: @Model.Subcategory.Name</h2>
+
+@section customScriptsBodyClose{
+    <script src="~/Scripts/custom/addToCart.js"></script>
+}
