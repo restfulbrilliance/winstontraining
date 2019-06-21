@@ -9,8 +9,8 @@ var addToCart = new Vue({
 
     methods: {
 
-        addToCart: function (skuCode, quantityToUpdate) {
-            Store.$emit('cart:updateCartService', skuCode, quantityToUpdate);
+        addToCart: function (skuCode, quantityToAdd) {
+            Store.$emit('cart:addCartService', skuCode, quantityToAdd);
         }
     }
 });

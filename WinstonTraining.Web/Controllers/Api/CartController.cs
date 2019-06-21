@@ -26,7 +26,6 @@ namespace WinstonTraining.Web.Controllers.Api
         private static Injected<ReferenceConverter> _referenceConverter;
         private static Injected<ILineItemValidator> _lineItemValidator;
         private static Injected<IPlacedPriceProcessor> _placedPriceProcessor;
-        private static Injected<IInventoryProcessor> _inventoryProcessor;
 
         class CartApiModel
         {
@@ -45,7 +44,7 @@ namespace WinstonTraining.Web.Controllers.Api
             {
                 CustomerId = epiCart.CustomerId.ToString();
                 Items = epiCart.GetAllLineItems().Select(epiLi => new LineItemApiModel(epiLi)).ToList();
-                TotalItems = Items.Count;
+                TotalItems = (int) Items.Sum(li => li.Quantity);
                 ShippingTotal = epiCart.GetShippingTotal().Amount;
                 ShippingSubTotal = epiCart.GetShippingSubTotal().Amount;
                 ShippingDiscountTotal = epiCart.GetShippingDiscountTotal().Amount;
@@ -65,12 +64,14 @@ namespace WinstonTraining.Web.Controllers.Api
                 DisplayName = epiLineItem.DisplayName;
                 PlacedPrice = epiLineItem.PlacedPrice;
                 Quantity = epiLineItem.Quantity;
+                Total = epiLineItem.PlacedPrice * epiLineItem.Quantity; 
             }
 
             public string Code { get; set; }
             public string DisplayName { get; set; }
             public decimal PlacedPrice { get; set; }
             public decimal Quantity { get; set; }
+            public decimal Total { get; set; }
         }
 
         [HttpGet]
@@ -112,21 +113,13 @@ namespace WinstonTraining.Web.Controllers.Api
 
         [HttpGet]
         [Route("update/{skuCode}/{quantityToUpdate}")]
-        public IHttpActionResult AddOrUpdateToCart(string skuCode, int quantityToUpdate = 1)
+        public IHttpActionResult UpdateCart(string skuCode, int quantityToUpdate = 1)
         {
             var customerId = CustomerContext.Current.CurrentContactId;
 
-            if (customerId == null)
+            if (!IsCustomerAndSkuFound(customerId, skuCode, out Sku skuToAdd))
                 return NotFound();
-
-            var contentRefToSku = _referenceConverter.Service.GetContentLink(skuCode);
-
-            if (ContentReference.IsNullOrEmpty(contentRefToSku))
-                return NotFound();
-
-            if (!_contentLoader.Service.TryGet<Sku>(contentRefToSku, out Sku skuToAdd))
-                return NotFound();
-
+           
             var cart = _orderRepository.Service.LoadOrCreateCart<ICart>(customerId, DEFAULT_CART_NAME);
 
             var existingLineItem = cart.GetAllLineItems().FirstOrDefault(li => li.Code.Equals(skuCode, StringComparison.InvariantCultureIgnoreCase));
@@ -148,20 +141,82 @@ namespace WinstonTraining.Web.Controllers.Api
                     shipment.LineItems.Remove(existingLineItem);
 
                 else
+                {
                     cart.UpdateLineItemQuantity(shipment, existingLineItem, quantityToUpdate);
+                }
             }
 
+            ValidateAndSaveCart(cart);
+            return Ok(new CartApiModel(cart));
+        }
+
+        [HttpGet]
+        [Route("add/{skuCode}/{quantityToAdd}")]
+        public IHttpActionResult AddToCart(string skuCode, int quantityToAdd = 1)
+        {
+            var customerId = CustomerContext.Current.CurrentContactId;
+
+            if (!IsCustomerAndSkuFound(customerId, skuCode, out Sku skuToAdd))
+                return NotFound();
+
+            var cart = _orderRepository.Service.LoadOrCreateCart<ICart>(customerId, DEFAULT_CART_NAME);
+
+            var existingLineItem = cart.GetAllLineItems().FirstOrDefault(li => li.Code.Equals(skuCode, StringComparison.InvariantCultureIgnoreCase));
+
+            // We don't already have the SKU in the cart
+            if (existingLineItem == null)
+            {
+                var newLineItem = cart.CreateLineItem(skuCode);
+                newLineItem.DisplayName = skuToAdd.DisplayName;
+                newLineItem.Quantity = quantityToAdd;
+                cart.AddLineItem(newLineItem);
+            }
+
+            else
+            {
+                var shipment = cart.GetFirstShipment();
+
+                if (quantityToAdd <= 0)
+                    return Ok(new CartApiModel(cart));
+
+                else
+                    cart.UpdateLineItemQuantity(shipment, existingLineItem, existingLineItem.Quantity + quantityToAdd);
+            }
+
+            ValidateAndSaveCart(cart);
+
+            return Ok(new CartApiModel(cart));
+        }
+
+        private static void ValidateAndSaveCart(ICart cart)
+        {
             var validationIssues = new Dictionary<ILineItem, List<ValidationIssue>>();
 
             cart.ValidateOrRemoveLineItems((item, issue) =>
                 validationIssues.AddValidationIssues(item, issue), _lineItemValidator.Service);
-        
+
             cart.UpdatePlacedPriceOrRemoveLineItems(CustomerContext.Current.GetContactById(cart.CustomerId), (item, issue) => validationIssues.AddValidationIssues(item, issue),
                 _placedPriceProcessor.Service);
 
             _orderRepository.Service.Save(cart);
+        }
 
-            return Ok(new CartApiModel(cart));
+        private static bool IsCustomerAndSkuFound(Guid customerId, string skuCode, out Sku skuToAdd)
+        {
+            skuToAdd = null;
+
+            if (customerId == null)
+                return false;
+
+            var contentRefToSku = _referenceConverter.Service.GetContentLink(skuCode);
+
+            if (ContentReference.IsNullOrEmpty(contentRefToSku))
+                return false;
+
+            if (!_contentLoader.Service.TryGet<Sku>(contentRefToSku, out skuToAdd))
+                return false;
+
+            return true;
         }
     }
 }

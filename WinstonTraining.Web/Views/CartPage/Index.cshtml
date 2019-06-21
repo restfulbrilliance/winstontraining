@@ -24,20 +24,34 @@
         </div>
     </div>
 
+    <div class="row mb-2">
+        <div class="col-6">
+            <h5>Item Name</h5>
+        </div>
+        <div class="col-2">
+            <h5>Item Qty</h5>
+        </div>
+        <div class="col-2">
+        </div>
+        <div class="col-2">
+            <h5>Price</h5>
+        </div>
+    </div>
+
     <div class="row mb-2" v-for="item in Items">
 
         <!-- for each item in the cart render the following-->
-        <div class="col pt-2">
+        <div class="col-6 pt-2">
             <span v-bind:data-code="item.Code">{{item.DisplayName}}</span>
         </div>
-        <div class="col-auto">
+        <div class="col-2">
             <input type="number" class="p-2" style="width:65px" v-bind:value="item.Quantity" v-on:input="updateLineItemQty(item.Code, $event.target.value)" />
         </div>
-        <div class="col-auto">
+        <div class="col-2">
             <button type="button" class="btn btn-primary p-2" v-on:click="updateLineItemQty(item.Code, 0)">Remove</button>
         </div>
-        <div class="col-auto pt-2">
-            <span>$ {{item.PlacedPrice}} {{Currency}}</span>
+        <div class="col-2 pt-2">
+            <span>$ {{item.Total}} {{Currency}}</span>
         </div>
         <!-- end for-->
 
@@ -51,6 +65,6 @@
 
 </div>
 
-@section customScriptsBodyClose{
-    <script src="~/Scripts/custom/cart.js"></script>
-}
+    @section customScriptsBodyClose{
+        <script src="~/Scripts/custom/cart.js"></script>
+    }

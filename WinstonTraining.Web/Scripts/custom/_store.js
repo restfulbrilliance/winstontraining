@@ -7,7 +7,8 @@
                     Code: "",
                     Quantity: 0,
                     DisplayName: "",
-                    PlacedPrice: 0.0
+                    PlacedPrice: 0.0,
+                    Total: 0.0
                 }
             ],
         TotalItems: 0,
@@ -27,7 +28,9 @@
 
 var _methods = {
 
+    //========================================================
     //service methods
+    //========================================================
     getCartService: function () {
 
         var self = this;
@@ -99,7 +102,27 @@ var _methods = {
             });
     },
 
+    addCartService: function (skuCode, quantityToAdd) {
+
+        var self = this;
+        return $.ajax(
+            {
+                method: 'GET',
+                url: '/api/cart/add/' + skuCode + '/' + quantityToAdd
+
+            }).then(function (result) {
+                Store.$emit('cart:addCartService:then', result);
+                return result;
+
+            }).fail(function () {
+                Store.$emit('cart:addCartService:fail');
+                return;
+            });
+    },
+
+    //========================================================
     //data methods
+    //========================================================
     setCartData: function (cartResult) {
 
         var self = this;
@@ -161,12 +184,14 @@ window.Store = Store;
 Store.$on('cart:getCartService', Store.getCartService);
 Store.$on('cart:clearCartService', Store.clearCartService);
 Store.$on('cart:updateCartService', Store.updateCartService);
+Store.$on('cart:addCartService', Store.addCartService);
 Store.$on('customer:getCustomerService', Store.getCustomerService);
 
 //rs: data method success events
 Store.$on('cart:getCartService:then', Store.setCartData);
 Store.$on('cart:clearCartService:then', Store.clearCartData);
 Store.$on('cart:updateCartService:then', Store.setCartData);
+Store.$on('cart:addCartService:then', Store.setCartData);
 Store.$on('customer:getCustomerService:then', Store.setCustomerData);
 
 //rs: data method fail event
