@@ -8,21 +8,25 @@
 <head>
     <link href="~/Content/bootstrap.min.css" rel='stylesheet' />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css" rel='stylesheet' />
+    <link href="~/Content/slideCart.css" rel='stylesheet' />
     @RenderSection("customCssHead", false)
     @RenderSection("customScriptsHead", false)
 </head>
 
 <body>
     @{ Html.RenderPartial("_Header"); }
+    @{ Html.RenderPartial("_SlideCart"); }
     <div class="container">
         @RenderBody()
     </div>
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bigSlide.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="~/Scripts/custom/_store.js"></script>
     <script src="~/Scripts/custom/cartHeader.js"></script>
     <script src="~/Scripts/custom/customerHeader.js"></script>
+    <script src="~/Scripts/custom/slideCart.js"></script>
     @RenderSection("customScriptsBodyClose", false)
     <script src="~/Scripts/custom/_init.js"></script>
 </body>

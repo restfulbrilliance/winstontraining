@@ -1,23 +1,34 @@
 ﻿var _data = {
+
+    //cart domain
     cart: {
-        CustomerId: "",
-        Items:
-            [
-                {
-                    Code: "",
-                    Quantity: 0,
-                    DisplayName: "",
-                    PlacedPrice: 0.0,
-                    Total: 0.0
-                }
-            ],
-        TotalItems: 0,
-        ShippingTotal: 0,
-        TaxTotal: 0,
-        SubTotal: 0,
-        Total: 0,
-        Currency: ""
+
+        data: {
+            CustomerId: "",
+            Items:
+                [
+                    {
+                        Code: "",
+                        Quantity: 0,
+                        DisplayName: "",
+                        PlacedPrice: 0.0,
+                        Total: 0.0
+                    }
+                ],
+            TotalItems: 0,
+            ShippingTotal: 0,
+            TaxTotal: 0,
+            SubTotal: 0,
+            Total: 0,
+            Currency: ""
+        },
+
+        state: {
+            IsSlideOutCartOpen : false
+        }
     },
+
+    //customer domain
     customer: {
         CustomerId: "",
         FirstName: "",
@@ -128,14 +139,14 @@ var _methods = {
         var self = this;
 
         //rs: manually mapping each of the fields
-        self.cart.CustomerId = cartResult.CustomerId;
-        self.cart.Items = cartResult.Items;
-        self.cart.TotalItems = cartResult.TotalItems;
-        self.cart.ShippingTotal = cartResult.ShippingTotal;
-        self.cart.TaxTotal = cartResult.TaxTotal;
-        self.cart.SubTotal = cartResult.SubTotal;
-        self.cart.Total = cartResult.Total;
-        self.cart.Currency = cartResult.Currency;
+        self.cart.data.CustomerId = cartResult.CustomerId;
+        self.cart.data.Items = cartResult.Items;
+        self.cart.data.TotalItems = cartResult.TotalItems;
+        self.cart.data.ShippingTotal = cartResult.ShippingTotal;
+        self.cart.data.TaxTotal = cartResult.TaxTotal;
+        self.cart.data.SubTotal = cartResult.SubTotal;
+        self.cart.data.Total = cartResult.Total;
+        self.cart.data.Currency = cartResult.Currency;
     },
 
     clearCartData: function (result) {
@@ -143,12 +154,12 @@ var _methods = {
         var self = this;
 
         //rs: manually mapping each of the fields
-        self.cart.Items = [];
-        self.cart.TotalItems = 0;
-        self.cart.ShippingTotal = 0;
-        self.cart.TaxTotal = 0;
-        self.cart.SubTotal = 0;
-        self.cart.Total = 0;
+        self.cart.data.Items = [];
+        self.cart.data.TotalItems = 0;
+        self.cart.data.ShippingTotal = 0;
+        self.cart.data.TaxTotal = 0;
+        self.cart.data.SubTotal = 0;
+        self.cart.data.Total = 0;
     },
 
     setCustomerData: function (customerResult) {
@@ -171,6 +182,31 @@ var _methods = {
         self.customer.FirstName = '';
         self.customer.LastName = '';
         self.customer.IsLoggedIn = false;
+    },
+
+    setSlideOutState: function () {
+
+        var self = this;
+
+        if (!self.cart.state.IsSlideOutCartOpen)
+            self.cart.state.IsSlideOutCartOpen = true;
+
+        else
+            self.cart.state.IsSlideOutCartOpen = false;
+    },
+
+    //========================================================
+    //UI methods
+    //========================================================
+    openSlideCart: function () {
+
+        var self = this;
+
+        if (!self.cart.state.IsSlideOutCartOpen) {
+
+            $('.vue-CartHeader').trigger('click');
+            self.cart.state.IsSlideOutCartOpen = true;
+        }
     }
 };
 
@@ -192,6 +228,7 @@ Store.$on('cart:getCartService:then', Store.setCartData);
 Store.$on('cart:clearCartService:then', Store.clearCartData);
 Store.$on('cart:updateCartService:then', Store.setCartData);
 Store.$on('cart:addCartService:then', Store.setCartData);
+Store.$on('cart:addCartService:then', Store.openSlideCartIfClosed);
 Store.$on('customer:getCustomerService:then', Store.setCustomerData);
 
 //rs: data method fail event
@@ -199,3 +236,6 @@ Store.$on('customer:getCustomerService:fail', Store.clearCustomerData);
 
 //rs: handle the failure
 //Store.$on('cart:getCartService:fail', xxx);
+
+//rs: handle UI events
+Store.$on('cart:clickCartHeader', Store.setSlideOutState);

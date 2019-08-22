@@ -350,12 +350,14 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\vue.css" />
+    <Content Include="Content\slideCart.css" />
+    <Content Include="Scripts\bigSlide.min.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\custom\addToCart.js" />
+    <Content Include="Scripts\custom\slideCart.js" />
     <Content Include="Scripts\custom\customerHeader.js" />
     <Content Include="Scripts\custom\cartHeader.js" />
     <Content Include="Scripts\custom\cart.js" />
@@ -446,6 +448,7 @@
     <Content Include="Views\Shared\AlternateBlockRenderers\HalfTeaserBlock.cshtml" />
     <Content Include="Views\DeveloperPage\Index.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
+    <Content Include="Views\Shared\_SlideCart.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

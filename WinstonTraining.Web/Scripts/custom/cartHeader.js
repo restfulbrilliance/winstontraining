@@ -5,5 +5,11 @@ var cartHeader = new Vue({
     el: '.vue-CartHeader',
 
     //rs: scoped data to the 'cart' domain
-    data: Store.cart
+    data: Store.cart,
+
+    methods: {
+        clickCartHeader: function () {
+            Store.$emit('cart:clickCartHeader');
+        }
+    }
 });

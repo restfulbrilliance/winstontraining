@@ -20,7 +20,7 @@
 
     <div class="row mb-2">
         <div class="col">
-            <h2>Total Line Items: {{TotalItems}}</h2>
+            <h2>Total Line Items: {{data.TotalItems}}</h2>
         </div>
     </div>
 
@@ -38,7 +38,7 @@
         </div>
     </div>
 
-    <div class="row mb-2" v-for="item in Items">
+    <div class="row mb-2" v-for="item in data.Items">
 
         <!-- for each item in the cart render the following-->
         <div class="col-6 pt-2">
@@ -51,16 +51,29 @@
             <button type="button" class="btn btn-primary p-2" v-on:click="updateLineItemQty(item.Code, 0)">Remove</button>
         </div>
         <div class="col-2 pt-2">
-            <span>$ {{item.Total}} {{Currency}}</span>
+            <span>${{item.Total}} {{data.Currency}}</span>
         </div>
         <!-- end for-->
 
     </div>
 
-    <div class="row">
+    <div class="row mb-2">
         <div class="col-auto">
             <button type="button" class="btn btn-primary p-2" v-on:click="clickClearAllBtn()">Clear All</button>
         </div>
+    </div>
+
+    <div class="row justify-content-end">
+        <div class="col-auto">Sub Total : ${{data.SubTotal}} {{data.Currency}}</div>
+    </div>
+    <div class="row justify-content-end">
+        <div class="col-auto">Shipping Total: ${{data.ShippingTotal}} {{data.Currency}}</div>
+    </div>
+    <div class="row justify-content-end">
+        <div class="col-auto">Tax Total : ${{data.TaxTotal}} {{data.Currency}}</div>
+    </div>
+    <div class="row justify-content-end">
+        <div class="col-auto">Order Total : ${{data.Total}} {{data.Currency}}</div>
     </div>
 
 </div>

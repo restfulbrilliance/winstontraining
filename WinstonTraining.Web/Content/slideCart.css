@@ -1,0 +1,6 @@
+﻿.panel {
+    background: white;
+    border-left: 1px solid black;
+    height: 100%;
+    z-index: 1;
+}

@@ -1,0 +1,64 @@
+﻿<div id="menu" class="panel vue-SlideCart" role="navigation">
+    
+    <div class="container">
+
+        <div class="row mb-2 mt-2">
+            <div class="col">
+                <h2>Shopping Cart</h2>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-6">
+                <h5>Item Name</h5>
+            </div>
+            <div class="col-2">
+                <h5>Item Qty</h5>
+            </div>
+            <div class="col-2">
+            </div>
+            <div class="col-2">
+                <h5>Price</h5>
+            </div>
+        </div>
+
+        <div class="row mb-2" v-for="item in data.Items">
+
+            <!-- for each item in the cart render the following-->
+            <div class="col-6 pt-2">
+                <span v-bind:data-code="item.Code">{{item.DisplayName}}</span>
+            </div>
+            <div class="col-2">
+                <input type="number" class="p-2" style="width:65px" v-bind:value="item.Quantity" v-on:input="updateLineItemQty(item.Code, $event.target.value)" />
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn btn-primary p-2" v-on:click="updateLineItemQty(item.Code, 0)">Remove</button>
+            </div>
+            <div class="col-2 pt-2">
+                <span>$ {{item.Total}} {{data.Currency}}</span>
+            </div>
+            <!-- end for-->
+
+        </div>
+
+        <div class="row justify-content-end">
+            <div class="col-auto">Sub Total : ${{data.SubTotal}} {{data.Currency}}</div>
+        </div>
+        <div class="row justify-content-end">
+            <div class="col-auto">Shipping Total: ${{data.ShippingTotal}} {{data.Currency}}</div>
+        </div>
+        <div class="row justify-content-end">
+            <div class="col-auto">Tax Total : ${{data.TaxTotal}} {{data.Currency}}</div>
+        </div>
+        <div class="row justify-content-end">
+            <div class="col-auto">Order Total : ${{data.Total}} {{data.Currency}}</div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-auto">
+                <a href="/cart" class="btn btn-primary">Proceed to Cart</a>
+            </div>
+        </div>
+
+    </div>
+</div>
