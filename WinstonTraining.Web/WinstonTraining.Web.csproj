@@ -330,8 +330,10 @@
     <Compile Include="Infrastructure\Initialization\DisplayOptionsInitialization.cs" />
     <Compile Include="Infrastructure\Initialization\EPiServerCommerceInitializationModule.cs" />
     <Compile Include="Infrastructure\Initialization\SiteInitialization.cs" />
-    <Compile Include="Infrastructure\Initialization\SiteRegistry.cs" />
-    <Compile Include="Infrastructure\Initialization\StructureMapDependencyResolver.cs" />
+    <Compile Include="Infrastructure\IoC\SiteRegistry.cs" />
+    <Compile Include="Infrastructure\IoC\StructureMapMvcDependencyResolver.cs" />
+    <Compile Include="Infrastructure\IoC\StructureMapWebApiDependencyResolver.cs" />
+    <Compile Include="Infrastructure\IoC\StructureMapWebApiDependencyScope.cs" />
     <Compile Include="Infrastructure\Rendering\ViewTemplateModelRegistrator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

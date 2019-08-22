@@ -4,7 +4,7 @@ using WinstonTraining.Core.Services;
 using WinstonTraining.Core.Services.Interfaces;
 using WinstonTraining.Web.CustomCustomArea;
 
-namespace WinstonTraining.Web.Infrastructure.Initialization
+namespace WinstonTraining.Web.Infrastructure.IoC
 {
     public class SiteRegistry : Registry
     {

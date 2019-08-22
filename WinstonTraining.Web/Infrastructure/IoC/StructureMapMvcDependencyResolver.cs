@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace WinstonTraining.Web.Infrastructure.Initialization
+namespace WinstonTraining.Web.Infrastructure.IoC
 {
-    public class StructureMapDependencyResolver : IDependencyResolver
+    public class StructureMapMvcDependencyResolver : IDependencyResolver
     {
         private readonly IContainer _container;
 
-        public StructureMapDependencyResolver(IContainer container)
+        public StructureMapMvcDependencyResolver(IContainer container)
         {
             _container = container;
         }
