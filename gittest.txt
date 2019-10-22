@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 victor
+=======
+Max's message
+>>>>>>> 3e8f7c65f385a51b2ce8c6655a126f1edf142d08
